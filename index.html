@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Beauty Lounge by Sabine – Kosmetikstudio | Zeltweg</title>
+<link href="https://fonts.googleapis.com/css2?family=Gloock&family=Outfit:wght@200;300;400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #f7f3ee;
+  --bg2: #eee8df;
+  --ink: #1e1410;
+  --ink2: #3d2e24;
+  --mocha: #2c1810;
+  --gold: #b8893a;
+  --gold-lt: #d4a95a;
+  --blush: #e8c4b0;
+  --blush2: #c49a7a;
+  --white: #fdfaf7;
+}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{background:var(--bg);color:var(--ink);font-family:'Outfit',sans-serif;font-weight:300;overflow-x:hidden;cursor:none;}
+
+/* CURSOR */
+.cursor{position:fixed;width:10px;height:10px;background:var(--gold);border-radius:50%;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);transition:width 0.3s,height 0.3s,opacity 0.3s;mix-blend-mode:multiply;}
+.cursor-ring{position:fixed;width:36px;height:36px;border:1px solid var(--gold);border-radius:50%;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);transition:width 0.3s,height 0.3s;opacity:0.5;}
+.cursor.hover{width:20px;height:20px;opacity:0.5;}
+.cursor-ring.hover{width:56px;height:56px;opacity:0.2;}
+@media(hover:none){.cursor,.cursor-ring{display:none;}body{cursor:auto;}}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:200;display:flex;align-items:center;justify-content:space-between;padding:14px 60px;background:rgba(247,243,238,0.97);backdrop-filter:blur(16px);border-bottom:1px solid rgba(184,137,58,0.12);transition:padding 0.4s;}
+nav.compact{padding:10px 60px;}
+
+.nav-logo{text-decoration:none;display:flex;flex-direction:column;line-height:1.25;}
+.nav-logo-main{font-family:'Gloock',serif;font-size:17px;font-style:italic;color:var(--mocha);letter-spacing:0.02em;}
+.nav-logo-main span{font-style:normal;color:var(--gold);font-size:14px;font-family:'Outfit',sans-serif;font-weight:300;letter-spacing:0.08em;}
+.nav-logo-sub{font-size:8px;letter-spacing:0.4em;text-transform:uppercase;color:var(--blush2);font-family:'Outfit',sans-serif;font-weight:300;margin-top:2px;}
+
+.nav-links{display:flex;align-items:center;gap:28px;}
+.nav-links a{font-size:11px;font-weight:400;letter-spacing:0.18em;text-transform:uppercase;color:var(--ink2);text-decoration:none;transition:color 0.3s;position:relative;}
+.nav-links a::after{content:'';position:absolute;bottom:-2px;left:0;width:0;height:1px;background:var(--gold);transition:width 0.3s;}
+.nav-links a:hover{color:var(--gold);}
+.nav-links a:hover::after{width:100%;}
+.nav-btn{background:var(--mocha)!important;color:var(--bg)!important;padding:10px 24px;letter-spacing:0.2em!important;transition:all 0.3s!important;}
+.nav-btn:hover{background:var(--gold)!important;transform:translateY(-1px);box-shadow:0 4px 16px rgba(184,137,58,0.3)!important;}
+.nav-btn::after{display:none!important;}
+.burger{display:none;flex-direction:column;gap:5px;background:none;border:none;cursor:none;}
+.burger span{display:block;width:22px;height:1.5px;background:var(--mocha);}
+
+/* DRAWER */
+.drawer{display:none;position:fixed;top:0;right:-100%;width:260px;height:100vh;background:var(--white);border-left:1px solid var(--bg2);z-index:300;padding:80px 36px 40px;flex-direction:column;transition:right 0.4s;}
+.drawer.open{right:0;}
+.drawer a{font-size:12px;letter-spacing:0.2em;text-transform:uppercase;color:var(--ink2);text-decoration:none;padding:16px 0;border-bottom:1px solid var(--bg2);display:block;transition:color 0.3s;}
+.drawer a:hover{color:var(--gold);}
+.drawer-x{position:absolute;top:22px;right:22px;background:none;border:none;font-size:20px;color:var(--ink2);cursor:none;}
+.drawer-ov{display:none;position:fixed;inset:0;background:rgba(30,20,16,0.4);z-index:299;}
+.drawer-ov.open{display:block;}
+
+/* HERO */
+.hero{height:100vh;min-height:600px;display:grid;grid-template-columns:55% 45%;padding-top:70px;}
+.hero-img{position:relative;overflow:hidden;}
+.hero-img img{width:100%;height:100%;object-fit:cover;}
+.hero-img-badge{position:absolute;top:40%;left:28px;transform:translateY(-50%);background:var(--white);padding:16px 22px;display:flex;flex-direction:column;gap:4px;box-shadow:0 4px 20px rgba(44,24,16,0.12);animation:slideFromLeft 0.8s 1.1s both;}
+@keyframes slideFromLeft{from{opacity:0;transform:translateY(-50%) translateX(-20px)}to{opacity:1;transform:translateY(-50%) translateX(0)}}
+.badge-num{font-family:'Gloock',serif;font-size:28px;color:var(--gold);line-height:1;}
+.badge-suffix{font-size:10px;letter-spacing:0.15em;color:var(--blush2);margin-top:4px;}
+.badge-label{font-size:9px;letter-spacing:0.25em;text-transform:uppercase;color:var(--ink2);}
+
+.hero-copy{background:var(--white);display:flex;flex-direction:column;justify-content:center;padding:36px 55px 36px 50px;position:relative;overflow:hidden;}
+.hero-copy::before{content:'';position:absolute;top:-60px;right:-60px;width:300px;height:300px;background:radial-gradient(circle,rgba(184,137,58,0.06) 0%,transparent 70%);pointer-events:none;}
+.hero-eyebrow{display:flex;align-items:center;gap:14px;margin-bottom:22px;opacity:0;animation:slideUp 0.7s 0.3s forwards;}
+.eyebrow-line{width:32px;height:1px;background:var(--gold);}
+.eyebrow-text{font-size:10px;letter-spacing:0.35em;text-transform:uppercase;color:var(--gold);}
+.hero-h1{font-family:'Gloock',serif;font-size:clamp(34px,4.2vw,62px);line-height:1.1;color:var(--mocha);margin-bottom:16px;opacity:0;animation:slideUp 0.8s 0.45s forwards;}
+.hero-h1 em{font-style:italic;color:var(--gold);position:relative;}
+.hero-h1 em::after{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;background:linear-gradient(to right,var(--gold),transparent);transform:scaleX(0);transform-origin:left;animation:lineGrow 0.6s 1.4s forwards;}
+@keyframes lineGrow{to{transform:scaleX(1)}}
+.hero-p{font-size:13px;line-height:1.85;color:var(--ink2);max-width:340px;margin-bottom:28px;opacity:0;animation:slideUp 0.7s 0.6s forwards;}
+.hero-actions{display:flex;gap:12px;flex-wrap:wrap;opacity:0;animation:slideUp 0.7s 0.75s forwards;}
+.btn-dark{display:inline-block;background:var(--mocha);color:var(--bg);font-size:10px;font-weight:400;letter-spacing:0.25em;text-transform:uppercase;padding:14px 34px;text-decoration:none;transition:all 0.3s;position:relative;overflow:hidden;}
+.btn-dark::before{content:'';position:absolute;inset:0;background:var(--gold);transform:translateX(-101%);transition:transform 0.35s ease;}
+.btn-dark:hover::before{transform:translateX(0);}
+.btn-dark span{position:relative;z-index:1;}
+.btn-outline{display:inline-block;border:1.5px solid var(--mocha);color:var(--mocha);font-size:10px;font-weight:400;letter-spacing:0.25em;text-transform:uppercase;padding:14px 34px;text-decoration:none;transition:all 0.3s;}
+.btn-outline:hover{border-color:var(--gold);color:var(--gold);transform:translateY(-1px);}
+.hero-stat-row{display:flex;gap:28px;margin-top:28px;padding-top:24px;border-top:1px solid var(--bg2);opacity:0;animation:slideUp 0.7s 0.9s forwards;}
+.hstat-n{font-family:'Gloock',serif;font-size:26px;color:var(--mocha);}
+.hstat-l{font-size:9px;letter-spacing:0.2em;text-transform:uppercase;color:var(--blush2);margin-top:3px;}
+
+/* MARQUEE */
+.marquee-strip{background:var(--mocha);padding:11px 0;overflow:hidden;}
+.marquee-inner{display:flex;width:max-content;animation:marquee 18s linear infinite;}
+.m-item{font-size:9px;letter-spacing:0.35em;text-transform:uppercase;color:var(--blush);padding:0 26px;white-space:nowrap;flex-shrink:0;}
+@keyframes marquee{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+
+/* SHIMMER LINE */
+.shimmer-line{height:1px;background:linear-gradient(to right,transparent,var(--gold),var(--gold-lt),var(--gold),transparent);opacity:0.4;position:relative;overflow:hidden;}
+.shimmer-line::after{content:'';position:absolute;top:0;left:-60%;width:60%;height:100%;background:linear-gradient(to right,transparent,rgba(255,255,255,0.8),transparent);animation:shimmerMove 3s ease-in-out infinite;}
+@keyframes shimmerMove{0%{left:-60%}100%{left:160%}}
+
+/* SECTIONS */
+.section-tag{font-size:9px;letter-spacing:0.4em;text-transform:uppercase;color:var(--gold);margin-bottom:12px;}
+.section-title{font-family:'Gloock',serif;font-size:clamp(26px,3vw,44px);line-height:1.15;color:var(--mocha);}
+.section-title em{font-style:italic;color:var(--gold);}
+
+/* LEISTUNGEN */
+.leistungen{padding:90px 60px;background:var(--bg);}
+.leistungen-head{display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:44px;}
+.leistungen-head-right{font-size:10px;letter-spacing:0.1em;color:var(--blush2);max-width:200px;line-height:1.7;text-align:right;}
+.photo-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:3px;}
+.pgrid-tile{position:relative;overflow:hidden;cursor:none;aspect-ratio:4/3;}
+.pgrid-tile img{width:100%;height:100%;object-fit:cover;filter:brightness(0.45) saturate(0.7);transition:all 0.5s ease;}
+.pgrid-tile:hover img{filter:brightness(0.28) saturate(0.6);transform:scale(1.06);}
+.pgrid-overlay{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:flex-end;padding:22px;background:linear-gradient(to top,rgba(44,24,16,0.9) 0%,transparent 60%);transition:background 0.45s;}
+.pgrid-tile:hover .pgrid-overlay{background:linear-gradient(to top,rgba(44,24,16,0.97) 0%,rgba(44,24,16,0.35) 75%);}
+.pgrid-num{font-size:10px;letter-spacing:0.2em;color:var(--gold);opacity:0.6;margin-bottom:6px;transition:letter-spacing 0.3s;}
+.pgrid-tile:hover .pgrid-num{letter-spacing:0.35em;}
+.pgrid-name{font-family:'Gloock',serif;font-size:18px;color:var(--white);margin-bottom:4px;transform:translateY(4px);transition:transform 0.35s;}
+.pgrid-tile:hover .pgrid-name{transform:translateY(0);}
+.pgrid-sub{font-size:11px;line-height:1.6;color:rgba(253,250,247,0.5);max-height:0;overflow:hidden;transition:max-height 0.4s,opacity 0.4s;opacity:0;}
+.pgrid-tile:hover .pgrid-sub{max-height:50px;opacity:1;}
+.pgrid-arrow{font-size:13px;color:var(--gold);opacity:0;transform:translateX(-10px);transition:all 0.35s;margin-top:8px;display:inline-block;}
+.pgrid-tile:hover .pgrid-arrow{opacity:1;transform:translateX(0);}
+.pgrid-tile::after{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;background:linear-gradient(to right,var(--gold),var(--gold-lt));transform:scaleX(0);transform-origin:left;transition:transform 0.4s;}
+.pgrid-tile:hover::after{transform:scaleX(1);}
+
+/* ÜBER */
+.ueber{min-height:100vh;display:grid;grid-template-columns:1fr 1fr;background:var(--white);}
+.ueber-img{position:relative;overflow:hidden;}
+.ueber-img img{width:100%;height:100%;object-fit:cover;object-position:top;}
+.ueber-content{padding:80px 75px;display:flex;flex-direction:column;justify-content:center;}
+.ueber-quote{font-family:'Gloock',serif;font-size:clamp(17px,2.1vw,24px);font-style:italic;line-height:1.55;color:var(--mocha);border-left:3px solid var(--gold);padding-left:22px;margin:22px 0 26px;}
+.ueber-body{font-size:13px;line-height:1.9;color:var(--ink2);margin-bottom:12px;}
+.ueber-stats{display:flex;gap:40px;margin-top:34px;padding-top:26px;border-top:1px solid var(--bg2);}
+.us-n{font-family:'Gloock',serif;font-size:30px;color:var(--gold);line-height:1;}
+.us-l{font-size:9px;letter-spacing:0.2em;text-transform:uppercase;color:var(--blush2);margin-top:5px;}
+
+/* TEAM */
+.team{padding:90px 60px;background:var(--bg);}
+.team-head{margin-bottom:48px;}
+.team-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:24px;max-width:780px;}
+.team-card{background:var(--white);overflow:hidden;transition:transform 0.4s cubic-bezier(0.25,0.46,0.45,0.94),box-shadow 0.4s;}
+.team-card:hover{transform:translateY(-8px);box-shadow:0 20px 55px rgba(44,24,16,0.12);}
+.team-card-img{position:relative;overflow:hidden;aspect-ratio:3/4;}
+.team-card-img img{width:100%;height:100%;object-fit:cover;object-position:top;transition:transform 0.5s;}
+.team-card:hover .team-card-img img{transform:scale(1.04);}
+.team-card-img::after{content:'';position:absolute;inset:0;background:linear-gradient(135deg,transparent 40%,rgba(184,137,58,0.15) 50%,transparent 60%);transform:translateX(-100%);transition:transform 0.5s ease;}
+.team-card:hover .team-card-img::after{transform:translateX(100%);}
+.team-card-body{padding:26px 26px 30px;}
+.team-role{font-size:9px;letter-spacing:0.3em;text-transform:uppercase;color:var(--gold);margin-bottom:7px;}
+.team-name{font-family:'Gloock',serif;font-size:21px;color:var(--mocha);margin-bottom:10px;}
+.team-bio{font-size:12px;line-height:1.75;color:var(--ink2);opacity:0.75;margin-bottom:18px;}
+.team-book{display:inline-block;font-size:9px;letter-spacing:0.2em;text-transform:uppercase;color:var(--mocha);border-bottom:1px solid var(--gold);padding-bottom:2px;text-decoration:none;transition:all 0.3s;}
+.team-book:hover{color:var(--gold);letter-spacing:0.28em;}
+
+/* TERMIN */
+.termin{min-height:70vh;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;background:var(--mocha);}
+.termin-particles{position:absolute;inset:0;overflow:hidden;pointer-events:none;}
+.t-particle{position:absolute;border-radius:50%;background:var(--gold);animation:floatUp var(--dur) linear var(--delay) infinite;opacity:0;}
+@keyframes floatUp{0%{transform:translateY(100vh) scale(0);opacity:0;}10%{opacity:0.6;}90%{opacity:0.2;}100%{transform:translateY(-20px) scale(1.5);opacity:0;}}
+.termin-inner{position:relative;z-index:2;text-align:center;max-width:600px;padding:60px 40px;}
+.termin-tag{font-size:9px;letter-spacing:0.4em;text-transform:uppercase;color:var(--blush);margin-bottom:14px;}
+.termin-h{font-family:'Gloock',serif;font-size:clamp(30px,4.5vw,56px);line-height:1.1;color:var(--bg);margin-bottom:14px;}
+.termin-h em{font-style:italic;color:var(--gold-lt);}
+.termin-p{font-size:13px;line-height:1.8;color:rgba(247,243,238,0.6);margin-bottom:30px;}
+.termin-hours{display:flex;justify-content:center;gap:30px;margin-bottom:30px;padding:18px 28px;border:1px solid rgba(232,196,176,0.2);}
+.th-day{font-size:9px;letter-spacing:0.2em;text-transform:uppercase;color:var(--blush);margin-bottom:4px;}
+.th-time{font-family:'Gloock',serif;font-size:16px;color:var(--bg);}
+.btn-light{display:inline-block;background:var(--bg);color:var(--mocha);font-size:10px;font-weight:500;letter-spacing:0.25em;text-transform:uppercase;padding:15px 42px;text-decoration:none;transition:all 0.3s;position:relative;overflow:hidden;}
+.btn-light::before{content:'';position:absolute;inset:0;background:var(--gold-lt);transform:scaleX(0);transform-origin:left;transition:transform 0.35s;}
+.btn-light:hover::before{transform:scaleX(1);}
+.btn-light span{position:relative;z-index:1;}
+.btn-light:hover{color:var(--white);}
+
+/* REVIEWS */
+.reviews{padding:90px 60px;background:var(--bg2);}
+.rev-header{display:grid;grid-template-columns:auto 1fr;gap:50px;align-items:center;margin-bottom:48px;padding-bottom:38px;border-bottom:1px solid rgba(184,137,58,0.15);}
+.rev-score{text-align:center;}
+.rev-score-n{font-family:'Gloock',serif;font-size:60px;color:var(--gold);line-height:1;}
+.rev-score-s{font-size:10px;letter-spacing:0.3em;text-transform:uppercase;color:var(--blush2);margin:8px 0 4px;}
+.rev-score-l{font-size:9px;letter-spacing:0.2em;text-transform:uppercase;color:var(--ink2);}
+.rev-intro{font-family:'Gloock',serif;font-size:clamp(15px,2vw,22px);font-style:italic;line-height:1.55;color:var(--ink2);}
+.rev-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;}
+.rev-card{background:var(--white);padding:28px;border-bottom:3px solid transparent;transition:all 0.35s;position:relative;overflow:hidden;}
+.rev-card::before{content:'';position:absolute;top:0;left:0;width:0;height:100%;background:rgba(184,137,58,0.03);transition:width 0.4s;}
+.rev-card:hover::before{width:100%;}
+.rev-card:hover{border-color:var(--gold);transform:translateY(-4px);box-shadow:0 10px 32px rgba(44,24,16,0.07);}
+.rev-stars{font-size:11px;color:var(--gold);letter-spacing:3px;margin-bottom:12px;}
+.rev-q{font-family:'Gloock',serif;font-size:14px;font-style:italic;line-height:1.65;color:var(--ink2);margin-bottom:14px;}
+.rev-by{font-size:9px;letter-spacing:0.2em;text-transform:uppercase;color:var(--blush2);}
+
+/* KONTAKT */
+.kontakt{display:grid;grid-template-columns:1fr 1fr;background:var(--white);}
+.k-left{background:var(--bg);padding:80px 65px;display:flex;flex-direction:column;justify-content:center;}
+.k-details{margin-top:30px;}
+.k-row{padding:18px 0;border-bottom:1px solid var(--bg2);display:flex;flex-direction:column;gap:5px;transition:padding-left 0.3s;}
+.k-row:hover{padding-left:8px;}
+.k-row:first-child{border-top:1px solid var(--bg2);}
+.k-label{font-size:9px;letter-spacing:0.3em;text-transform:uppercase;color:var(--gold);}
+.k-val{font-family:'Gloock',serif;font-size:17px;color:var(--mocha);}
+.k-val a{color:inherit;text-decoration:none;transition:color 0.3s;}
+.k-val a:hover{color:var(--gold);}
+.k-hours{font-size:13px;line-height:2;color:var(--ink2);}
+.k-right{padding:80px 65px;display:flex;flex-direction:column;justify-content:center;}
+.form-2col{display:grid;grid-template-columns:1fr 1fr;gap:18px;}
+.fg{margin-bottom:20px;}
+.fg label{display:block;font-size:9px;letter-spacing:0.3em;text-transform:uppercase;color:var(--ink2);opacity:0.5;margin-bottom:9px;}
+.fg input,.fg textarea{width:100%;background:transparent;border:none;border-bottom:1.5px solid var(--bg2);padding:9px 0;color:var(--ink);font-family:'Outfit',sans-serif;font-weight:300;font-size:14px;outline:none;transition:border-color 0.3s;resize:none;}
+.fg input:focus,.fg textarea:focus{border-color:var(--gold);}
+.fg textarea{height:88px;}
+.form-submit{width:100%;background:var(--mocha);border:none;color:var(--bg);font-family:'Outfit',sans-serif;font-size:10px;font-weight:400;letter-spacing:0.3em;text-transform:uppercase;padding:15px;cursor:none;transition:all 0.3s;margin-top:4px;position:relative;overflow:hidden;}
+.form-submit::before{content:'';position:absolute;inset:0;background:var(--gold);transform:translateX(-101%);transition:transform 0.35s;}
+.form-submit:hover::before{transform:translateX(0);}
+.form-submit span{position:relative;z-index:1;}
+
+/* FOOTER */
+footer{background:var(--mocha);padding:36px 60px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:14px;}
+.f-logo{font-family:'Gloock',serif;font-size:18px;letter-spacing:0.05em;color:var(--bg);font-style:italic;}
+.f-logo span{font-style:normal;font-family:'Outfit',sans-serif;font-weight:300;font-size:14px;color:var(--gold);letter-spacing:0.08em;}
+.f-copy{font-size:9px;letter-spacing:0.15em;color:rgba(247,243,238,0.3);}
+.f-links{display:flex;gap:22px;}
+.f-links a{font-size:9px;letter-spacing:0.15em;text-transform:uppercase;color:rgba(247,243,238,0.35);text-decoration:none;transition:color 0.3s;}
+.f-links a:hover{color:var(--gold);}
+
+/* WA */
+.wa{position:fixed;bottom:28px;right:28px;z-index:200;width:52px;height:52px;border-radius:50%;background:#25D366;display:flex;align-items:center;justify-content:center;text-decoration:none;box-shadow:0 4px 20px rgba(37,211,102,0.3);transition:transform 0.3s;}
+.wa:hover{transform:scale(1.1);}
+.wa svg{width:26px;height:26px;fill:white;}
+
+/* REVEALS */
+.reveal{opacity:0;transform:translateY(32px);transition:opacity 0.85s ease,transform 0.85s ease;}
+.reveal.visible{opacity:1;transform:translateY(0);}
+.reveal-left{opacity:0;transform:translateX(-40px);transition:opacity 0.85s ease,transform 0.85s ease;}
+.reveal-left.visible{opacity:1;transform:translateX(0);}
+.reveal-right{opacity:0;transform:translateX(40px);transition:opacity 0.85s ease,transform 0.85s ease;}
+.reveal-right.visible{opacity:1;transform:translateX(0);}
+.rd1{transition-delay:0.12s;}
+.rd2{transition-delay:0.22s;}
+@keyframes slideUp{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:translateY(0)}}
+
+/* RESPONSIVE */
+@media(max-width:1100px){
+  nav{padding:10px 24px;}nav.compact{padding:7px 24px;}
+  .nav-links{display:none;}.burger{display:flex;}.drawer{display:flex;}
+  .hero{grid-template-columns:1fr;height:auto;padding-top:70px;}
+  .hero-img{height:52vw;min-height:280px;max-height:440px;}
+  .hero-img-badge{top:50%;left:20px;}
+  .hero-copy{padding:36px 28px 44px;}
+  .hero-h1{font-size:clamp(30px,7vw,50px);}
+  .leistungen{padding:70px 20px;}
+  .leistungen-head{flex-direction:column;align-items:flex-start;gap:10px;}
+  .leistungen-head-right{text-align:left;max-width:100%;}
+  .photo-grid{grid-template-columns:repeat(2,1fr);gap:2px;}
+  .ueber{grid-template-columns:1fr;min-height:auto;}
+  .ueber-img{height:60vw;min-height:240px;max-height:380px;}
+  .ueber-content{padding:50px 24px;}
+  .team{padding:70px 20px;}.team-grid{max-width:100%;}
+  .termin{min-height:auto;padding:70px 24px;}
+  .termin-hours{flex-direction:column;gap:14px;padding:16px 22px;}
+  .reviews{padding:70px 20px;}
+  .rev-header{grid-template-columns:1fr;gap:20px;}
+  .rev-grid{grid-template-columns:1fr;gap:12px;}
+  .kontakt{grid-template-columns:1fr;}
+  .k-left{padding:60px 24px;}.k-right{padding:60px 24px;}
+  .form-2col{grid-template-columns:1fr;}
+  footer{padding:28px 24px;flex-direction:column;align-items:flex-start;gap:12px;}
+}
+@media(max-width:600px){
+  .photo-grid{grid-template-columns:1fr;}
+  .team-grid{grid-template-columns:1fr;}
+  .ueber-stats{gap:20px;}.hero-stat-row{gap:20px;}
+}
+</style>
+</head>
+<body>
+
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<!-- NAV -->
+<nav id="nav">
+  <a href="#" class="nav-logo">
+    <span class="nav-logo-main">Beauty Lounge <span>by Sabine</span></span>
+    <span class="nav-logo-sub">Kosmetikstudio · Zeltweg</span>
+  </a>
+  <div class="nav-links">
+    <a href="#leistungen">Leistungen</a>
+    <a href="#ueber">Über uns</a>
+    <a href="#team">Team</a>
+    <a href="#bewertungen">Bewertungen</a>
+    <a href="#kontakt">Kontakt</a>
+    <a href="#termin" class="nav-btn">Termin buchen</a>
+  </div>
+  <button class="burger" onclick="openDrawer()"><span></span><span></span><span></span></button>
+</nav>
+
+<!-- DRAWER -->
+<div class="drawer-ov" id="dov" onclick="closeDrawer()"></div>
+<div class="drawer" id="drawer">
+  <button class="drawer-x" onclick="closeDrawer()">✕</button>
+  <a href="#leistungen" onclick="closeDrawer()">Leistungen</a>
+  <a href="#ueber" onclick="closeDrawer()">Über uns</a>
+  <a href="#team" onclick="closeDrawer()">Team</a>
+  <a href="#bewertungen" onclick="closeDrawer()">Bewertungen</a>
+  <a href="#kontakt" onclick="closeDrawer()">Kontakt</a>
+  <a href="#termin" onclick="closeDrawer()">Termin buchen →</a>
+</div>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-img">
+    <img src="hero-bg.png" alt="Beauty Lounge by Sabine – Kosmetikstudio Zeltweg">
+    <div class="hero-img-badge">
+      <span class="badge-num">20+</span>
+      <span class="badge-suffix">Jahre Erfahrung</span>
+      <span class="badge-label">Sabine & Michaela</span>
+    </div>
+  </div>
+  <div class="hero-copy">
+    <div class="hero-eyebrow">
+      <div class="eyebrow-line"></div>
+      <span class="eyebrow-text">Kosmetikstudio · Zeltweg</span>
+    </div>
+    <h1 class="hero-h1">Deine Schönheit.<br>Unsere <em>Leidenschaft.</em></h1>
+    <p class="hero-p">Sabine & Michaela – zwei Beauty-Expertinnen mit über 20 Jahren Erfahrung. Individuell, persönlich, immer ganz für dich da.</p>
+    <div class="hero-actions">
+      <a href="#termin" class="btn-dark"><span>Termin buchen</span></a>
+      <a href="#leistungen" class="btn-outline">Leistungen</a>
+    </div>
+    <div class="hero-stat-row">
+      <div><div class="hstat-n counter" data-target="20" data-suffix="+">0+</div><div class="hstat-l">Jahre Erfahrung</div></div>
+      <div><div class="hstat-n counter" data-target="2">0</div><div class="hstat-l">Expertinnen</div></div>
+      <div><div class="hstat-n counter" data-target="6">0</div><div class="hstat-l">Leistungen</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- MARQUEE -->
+<div class="marquee-strip">
+  <div class="marquee-inner">
+    <span class="m-item">Dauerhafte Haarentfernung ·</span><span class="m-item">Nageldesign ·</span><span class="m-item">Kosmetik & Hautpflege ·</span><span class="m-item">Aquapeeling ·</span><span class="m-item">Microneedling ·</span><span class="m-item">Fußpflege ·</span><span class="m-item">Dein Raum für Me-Time ·</span><span class="m-item">Schönheit & Pflege ·</span>
+    <span class="m-item">Dauerhafte Haarentfernung ·</span><span class="m-item">Nageldesign ·</span><span class="m-item">Kosmetik & Hautpflege ·</span><span class="m-item">Aquapeeling ·</span><span class="m-item">Microneedling ·</span><span class="m-item">Fußpflege ·</span><span class="m-item">Dein Raum für Me-Time ·</span><span class="m-item">Schönheit & Pflege ·</span>
+  </div>
+</div>
+
+<!-- LEISTUNGEN -->
+<section id="leistungen" class="leistungen">
+  <div class="leistungen-head reveal">
+    <div>
+      <p class="section-tag">Unsere Leistungen</p>
+      <h2 class="section-title">Alles für deine<br><em>Schönheit & Pflege</em></h2>
+    </div>
+    <div class="leistungen-head-right">Klick auf eine Leistung<br>für alle Details.</div>
+  </div>
+  <div class="photo-grid">
+    <div class="pgrid-tile reveal">
+      <img src="leistung-kosmetik.png" alt="Kosmetik & Hautpflege">
+      <div class="pgrid-overlay"><div class="pgrid-num">01</div><div class="pgrid-name">Kosmetik & Hautpflege</div><div class="pgrid-sub">Individuelle Gesichtsbehandlungen für gesunde, strahlende Haut.</div><span class="pgrid-arrow">→</span></div>
+    </div>
+    <div class="pgrid-tile reveal rd1">
+      <img src="leistung-haarentfernung.png" alt="Dauerhafte Haarentfernung">
+      <div class="pgrid-overlay"><div class="pgrid-num">02</div><div class="pgrid-name">Dauerhafte Haarentfernung</div><div class="pgrid-sub">Sanft, effektiv und dauerhaft – für samtweiches Hautgefühl.</div><span class="pgrid-arrow">→</span></div>
+    </div>
+    <div class="pgrid-tile reveal rd2">
+      <img src="leistung-nageldesign.png" alt="Nageldesign">
+      <div class="pgrid-overlay"><div class="pgrid-num">03</div><div class="pgrid-name">Nageldesign</div><div class="pgrid-sub">Von klassisch bis kreativ – perfekte Nägel für jeden Anlass.</div><span class="pgrid-arrow">→</span></div>
+    </div>
+    <div class="pgrid-tile reveal">
+      <img src="leistung-aquapeeling.png" alt="Aquapeeling">
+      <div class="pgrid-overlay"><div class="pgrid-num">04</div><div class="pgrid-name">Aquapeeling</div><div class="pgrid-sub">Tiefenreinigung der Haut – sanft, wirkungsvoll und sofort spürbar.</div><span class="pgrid-arrow">→</span></div>
+    </div>
+    <div class="pgrid-tile reveal rd1">
+      <img src="leistung-microneedling.png" alt="Microneedling">
+      <div class="pgrid-overlay"><div class="pgrid-num">05</div><div class="pgrid-name">Microneedling</div><div class="pgrid-sub">Hauterneuerung auf Profi-Niveau – für sichtbar glattere, straffere Haut.</div><span class="pgrid-arrow">→</span></div>
+    </div>
+    <div class="pgrid-tile reveal rd2">
+      <img src="leistung-fusspflege.png" alt="Fußpflege">
+      <div class="pgrid-overlay"><div class="pgrid-num">06</div><div class="pgrid-name">Fußpflege</div><div class="pgrid-sub">Professionelle & medizinische Fußpflege – verwöhnend und gründlich.</div><span class="pgrid-arrow">→</span></div>
+    </div>
+  </div>
+</section>
+
+<div class="shimmer-line"></div>
+
+<!-- ÜBER UNS -->
+<section id="ueber" class="ueber">
+  <div class="ueber-img reveal-left">
+    <img src="sabine-michaela-portrait.png" alt="Sabine & Michaela – Beauty Lounge by Sabine, Zeltweg">
+  </div>
+  <div class="ueber-content reveal-right">
+    <p class="section-tag">Über uns</p>
+    <h2 class="section-title">Zwei Expertinnen,<br>ein <em>Herzensprojekt.</em></h2>
+    <blockquote class="ueber-quote">"Menschen dabei zu unterstützen, sich schön, gepflegt und wohl in ihrer Haut zu fühlen – das ist unsere gemeinsame Leidenschaft."</blockquote>
+    <p class="ueber-body">Wir sind Sabine & Michaela – zwei Beauty-Expertinnen mit über 20 Jahren Erfahrung und einer gemeinsamen Mission: Bei uns gibt es keine Behandlungen von der Stange. Wir nehmen uns Zeit, hören zu und stimmen jede Behandlung individuell auf deine Wünsche und Bedürfnisse ab – ehrlich, entspannt und professionell.</p>
+    <p class="ueber-body">Sabine sorgt mit Nageldesign und dauerhafter Haarentfernung für perfekte Ergebnisse. Michaela begleitet dich mit Kosmetik, Fußpflege und Microneedling auf deinem Weg zu strahlender, gesunder Haut. Gemeinsam schaffen wir deinen Raum für echte Me-Time.</p>
+    <div class="ueber-stats">
+      <div><div class="us-n">20+</div><div class="us-l">Jahre Erfahrung</div></div>
+      <div><div class="us-n">2</div><div class="us-l">Expertinnen</div></div>
+      <div><div class="us-n">6</div><div class="us-l">Leistungen</div></div>
+    </div>
+  </div>
+</section>
+
+<div class="shimmer-line"></div>
+
+<!-- TEAM -->
+<section id="team" class="team">
+  <div class="team-head reveal">
+    <p class="section-tag">Unser Team</p>
+    <h2 class="section-title">Mit Herz und <em>Erfahrung.</em></h2>
+  </div>
+  <div class="team-grid">
+    <div class="team-card reveal">
+      <div class="team-card-img"><img src="team-sabine.png" alt="Sabine – Inhaberin Beauty Lounge by Sabine"></div>
+      <div class="team-card-body">
+        <p class="team-role">Inhaberin · Nageldesign & Haarentfernung</p>
+        <h3 class="team-name">Sabine</h3>
+        <p class="team-bio">Mit über 20 Jahren Leidenschaft für Nageldesign und dauerhafte Haarentfernung sorgt Sabine für perfekte Ergebnisse – und dafür, dass du dich bei jedem Besuch rundum wohl fühlst.</p>
+        <a href="#kontakt" class="team-book">Termin bei Sabine →</a>
+      </div>
+    </div>
+    <div class="team-card reveal rd1">
+      <div class="team-card-img"><img src="team-michaela.png" alt="Michaela – Kosmetikerin Beauty Lounge by Sabine"></div>
+      <div class="team-card-body">
+        <p class="team-role">Inhaberin · Kosmetik, Fußpflege & Microneedling</p>
+        <h3 class="team-name">Michaela</h3>
+        <p class="team-bio">Michaela begleitet dich mit Kosmetik, Fußpflege und Microneedling auf deinem Weg zu gesunder, strahlender Haut – mit echtem Fachwissen und feinem Gespür für deine Bedürfnisse.</p>
+        <a href="#kontakt" class="team-book">Termin bei Michaela →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TERMIN -->
+<section id="termin" class="termin">
+  <div class="termin-particles" id="particles"></div>
+  <div class="termin-inner reveal">
+    <p class="termin-tag">Jetzt buchen</p>
+    <h2 class="termin-h">Dein Termin,<br><em>ganz für dich.</em></h2>
+    <p class="termin-p">Ruf uns einfach an oder schreib uns – wir finden gemeinsam den perfekten Termin für dich.</p>
+    <div class="termin-hours">
+      <div><div class="th-day">Mo – Fr</div><div class="th-time">nach Vereinbarung</div></div>
+      <div><div class="th-day">Samstag</div><div class="th-time">auf Anfrage</div></div>
+    </div>
+    <a href="#kontakt" class="btn-light"><span>Jetzt Kontakt aufnehmen</span></a>
+  </div>
+</section>
+
+<!-- REVIEWS -->
+<section id="bewertungen" class="reviews">
+  <div class="rev-header reveal">
+    <div class="rev-score">
+      <div class="rev-score-n">20+</div>
+      <div class="rev-score-s">Jahre Erfahrung</div>
+      <div class="rev-score-l">Sabine & Michaela</div>
+    </div>
+    <p class="rev-intro">"Bei uns dreht sich alles um dich – keine Behandlungen von der Stange, sondern echte Hingabe, Zeit und Feingefühl für jeden einzelnen Menschen."</p>
+  </div>
+  <div class="rev-grid">
+    <div class="rev-card reveal">
+      <div class="rev-stars">★★★★★</div>
+      <p class="rev-q">"Ich habe endlich ein Studio gefunden, wo ich mich wirklich verstanden fühle. Sabine hat sich so viel Zeit genommen – die Behandlung war perfekt auf mich abgestimmt."</p>
+      <span class="rev-by">— Stammkundin aus Zeltweg</span>
+    </div>
+    <div class="rev-card reveal rd1">
+      <div class="rev-stars">★★★★★</div>
+      <p class="rev-q">"Nach jedem Termin gehe ich mit einem Lächeln raus. Diese Atmosphäre ist einfach einzigartig – man merkt, dass hier zwei Menschen mit echter Leidenschaft arbeiten."</p>
+      <span class="rev-by">— Kundin, 2026</span>
+    </div>
+    <div class="rev-card reveal rd2">
+      <div class="rev-stars">★★★★★</div>
+      <p class="rev-q">"Das Microneedling bei Michaela hat mein Hautbild komplett verändert. Professionell, einfühlsam und mit echtem Fachwissen. Ich komme immer wieder."</p>
+      <span class="rev-by">— Treue Kundin</span>
+    </div>
+  </div>
+</section>
+
+<!-- KONTAKT -->
+<section id="kontakt" class="kontakt">
+  <div class="k-left reveal-left">
+    <p class="section-tag">Kontakt & Anfahrt</p>
+    <h2 class="section-title">Wir freuen uns<br>auf <em>dich.</em></h2>
+    <div class="k-details">
+      <div class="k-row"><span class="k-label">Adresse</span><span class="k-val">Hauptstrasse 60, 8740 Zeltweg</span></div>
+      <div class="k-row"><span class="k-label">Telefon Sabine</span><span class="k-val"><a href="tel:+436764537307">0676 4537307</a></span></div>
+      <div class="k-row"><span class="k-label">Telefon Michaela</span><span class="k-val"><a href="tel:+436603944366">0660 3944366</a></span></div>
+      <div class="k-row"><span class="k-label">Termine</span><div class="k-hours">Mo – Fr &nbsp;&nbsp;nach Vereinbarung<br>Samstag &nbsp;&nbsp;auf Anfrage</div></div>
+    </div>
+  </div>
+  <div class="k-right reveal-right">
+    <p class="section-tag">Schreib uns</p>
+    <h2 class="section-title" style="margin-bottom:32px;">Deine <em>Nachricht</em></h2>
+    <div class="form-2col">
+      <div class="fg"><label>Name</label><input type="text" placeholder="Dein Name"></div>
+      <div class="fg"><label>E-Mail</label><input type="email" placeholder="deine@email.at"></div>
+    </div>
+    <div class="fg"><label>Betreff</label><input type="text" placeholder="Worum geht es?"></div>
+    <div class="fg"><label>Nachricht</label><textarea placeholder="Wie können wir dir helfen?"></textarea></div>
+    <button class="form-submit"><span>Nachricht senden</span></button>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="f-logo">Beauty Lounge <span>by Sabine</span></div>
+  <p class="f-copy">© 2026 Beauty Lounge by Sabine · Zeltweg, Steiermark</p>
+  <div class="f-links"><a href="#">Impressum</a><a href="#">Datenschutz</a></div>
+</footer>
+
+<!-- WA -->
+<a href="https://wa.me/436764537307" class="wa" target="_blank" aria-label="WhatsApp">
+  <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+</a>
+
+<script>
+const cursor=document.getElementById('cursor'),cursorRing=document.getElementById('cursorRing');
+let mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cursor.style.left=mx+'px';cursor.style.top=my+'px';});
+(function ar(){rx+=(mx-rx)*0.12;ry+=(my-ry)*0.12;cursorRing.style.left=rx+'px';cursorRing.style.top=ry+'px';requestAnimationFrame(ar);})();
+document.querySelectorAll('a,button,.pgrid-tile,.team-card,.rev-card').forEach(el=>{
+  el.addEventListener('mouseenter',()=>{cursor.classList.add('hover');cursorRing.classList.add('hover');});
+  el.addEventListener('mouseleave',()=>{cursor.classList.remove('hover');cursorRing.classList.remove('hover');});
+});
+window.addEventListener('scroll',()=>{document.getElementById('nav').classList.toggle('compact',scrollY>50);});
+const obs=new IntersectionObserver(e=>e.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible');}),{threshold:0.08});
+document.querySelectorAll('.reveal,.reveal-left,.reveal-right').forEach(r=>obs.observe(r));
+const cObs=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{
+    if(!e.isIntersecting)return;
+    const el=e.target,target=+el.dataset.target,suffix=el.dataset.suffix||'';
+    let start=0;
+    const step=ts=>{if(!start)start=ts;const p=Math.min((ts-start)/1400,1),ease=1-Math.pow(1-p,3);el.textContent=Math.floor(ease*target)+suffix;if(p<1)requestAnimationFrame(step);};
+    requestAnimationFrame(step);cObs.unobserve(el);
+  });
+},{threshold:0.5});
+document.querySelectorAll('.counter').forEach(c=>cObs.observe(c));
+const pc=document.getElementById('particles');
+if(pc){for(let i=0;i<20;i++){const p=document.createElement('div');p.className='t-particle';p.style.cssText=`left:${Math.random()*100}%;--dur:${4+Math.random()*6}s;--delay:${Math.random()*6}s;width:${1+Math.random()*2}px;height:${1+Math.random()*2}px;`;pc.appendChild(p);}}
+function openDrawer(){document.getElementById('drawer').classList.add('open');document.getElementById('dov').classList.add('open');}
+function closeDrawer(){document.getElementById('drawer').classList.remove('open');document.getElementById('dov').classList.remove('open');}
+</script>
+</body>
+</html>
